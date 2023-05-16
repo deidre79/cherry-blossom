@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
-const margin = {top: 10, right: 30, bottom: 30, left: 60},
-        width = 460 - margin.left - margin.right,
+const margin = {top: 10, right: 30, bottom: 30, left: 30},
+        width = 600 - margin.left - margin.right,
         height = 400 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
@@ -12,31 +12,40 @@ const svg = d3.select("#my_dataviz")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 //Read the data
-d3.csv("https://github.com/deidre79/cherry-blossom/blob/5db82fde4f22fce9743bf5d13033b8628053e27f/sakura.csv").then( function(data) {
+d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/bcfad0803cb99e708e95250585a5c10e924f1a65/sakura.csv").then( function(data) {
+
+    // Parse the date and convert other necessary fields
+    var parseDate = d3.timeParse("%y,%b,%d");
+    data.forEach(function (d) {
+        d.date = parseDate(d.date);
+        d.year = +d.year;
+        d.month = +d.month;
+        d.day = +d.day;
+    });
 
     // Add X axis
     const x = d3.scaleLinear()
-    .domain([0, 4000])
+    .domain(d3.extent(data, function (d) {return d.year;}))
     .range([ 0, width ]);
     svg.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x));
+    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
 
     // Add Y axis
-    const y = d3.scaleLinear()
-    .domain([0, 500000])
+    const y = d3.scaleTime()
+    .domain(d3.extent(data, function (d) {return d.date;}))
     .range([ height, 0]);
     svg.append("g")
-    .call(d3.axisLeft(y));
+    .call(d3.axisLeft(y).tickFormat(d3.timeFormat("%b,%d")));
 
     // Add dots
     svg.append('g')
     .selectAll("dot")
     .data(data)
     .join("circle")
-        .attr("cx", function (d) { return x(d.date); } )
-        .attr("cy", function (d) { return y(d.year); } )
+        .attr("cx", function (d) { return x(d.year); } )
+        .attr("cy", function (d) { return y(d.date); } )
         .attr("r", 1.5)
-        .style("fill", "#69b3a2")
+        .style("fill", "#ff375d")
 
 })
