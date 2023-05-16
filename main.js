@@ -12,10 +12,10 @@ const svg = d3.select("#my_dataviz")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/bcfad0803cb99e708e95250585a5c10e924f1a65/sakura.csv").then( function(data) {
+d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.csv").then( function(data) {
 
     // Parse the date and convert other necessary fields
-    var parseDate = d3.timeParse("%y,%b,%d");
+    var parseDate = d3.timeParse("%Y,%b,%d");
     data.forEach(function (d) {
         d.date = parseDate(d.date);
         d.year = +d.year;
@@ -24,12 +24,12 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/bcfad0803cb99e
     });
 
     // Add X axis
-    const x = d3.scaleLinear()
+    const x = d3.scaleTime()
     .domain(d3.extent(data, function (d) {return d.year;}))
     .range([ 0, width ]);
     svg.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x).tickFormat(d3.format("d")));
+    .call(d3.axisBottom(x).tickFormat(d3.timeFormat("%Y")));
 
     // Add Y axis
     const y = d3.scaleTime()
@@ -47,5 +47,9 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/bcfad0803cb99e
         .attr("cy", function (d) { return y(d.date); } )
         .attr("r", 1.5)
         .style("fill", "#ff375d")
+
+    // similar to above for svg.append line but don't need to call data(data)
+    // above and below color, like .style("fill") but with a function instead of a value (if?)
+    
 
 })
