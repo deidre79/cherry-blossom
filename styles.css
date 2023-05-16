@@ -1,0 +1,81 @@
+:root {
+    --color-background: #EAB252;
+    --color-body: #FFFFFF;
+    --color-text: #000000;
+    --color-accent: #903300;
+}
+
+html {
+    font-size: 12px;
+    font-family: "Roboto", sans-serif;
+    background-color: var(--color-background);
+}
+
+body {
+    max-width: 100ch;
+    margin: 0 auto;
+    background-color: var(--color-body);
+    padding: 0 20px 20px 20px;
+    border: 1px solid var(--color-text);
+}
+
+h1 {
+    margin: 0;
+    padding: 20px 0;
+    color: var(--color-text);
+    font-size: 60px;
+    text-align: center;
+}
+
+img {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+p,li, tr {
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 1px;
+    color: var(--color-text);
+}
+
+a {
+    color: var(--color-accent);
+}
+
+/* Mobile devices */
+@media (min-width: 320px) {
+    /* styles for mobile devices */
+    h1 {
+        font-size: 40px;
+    }
+
+    p, li, tr {
+        font-size: 12px;
+    }
+  }
+  
+  /* Tablets */
+  @media (min-width: 768px) {
+    /* styles for tablets */
+    h1 {
+        font-size: 50px;
+    }
+    
+    p, li, tr {
+        font-size: 14px;
+    }
+  }
+  
+  /* Laptops and desktops */
+  @media (min-width: 1024px) {
+    /* styles for laptops and desktops */
+    h1 {
+        font-size: 60px;
+    }
+    
+    p, li, tr {
+        font-size: 16px;
+    }
+  }
