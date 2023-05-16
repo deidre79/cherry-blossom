@@ -12,7 +12,7 @@ const svg = d3.select("#my_dataviz")
     .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 //Read the data
-d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_dataset/2_TwoNum.csv").then( function(data) {
+d3.csv("https://github.com/deidre79/cherry-blossom/blob/5db82fde4f22fce9743bf5d13033b8628053e27f/sakura.csv").then( function(data) {
 
     // Add X axis
     const x = d3.scaleLinear()
@@ -34,8 +34,8 @@ d3.csv("https://raw.githubusercontent.com/holtzy/data_to_viz/master/Example_data
     .selectAll("dot")
     .data(data)
     .join("circle")
-        .attr("cx", function (d) { return x(d.GrLivArea); } )
-        .attr("cy", function (d) { return y(d.SalePrice); } )
+        .attr("cx", function (d) { return x(d.date); } )
+        .attr("cy", function (d) { return y(d.year); } )
         .attr("r", 1.5)
         .style("fill", "#69b3a2")
 
