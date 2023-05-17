@@ -1,7 +1,7 @@
 // set the dimensions and margins of the graph
 const margin = {top: 10, right: 30, bottom: 30, left: 30},
         width = 600 - margin.left - margin.right,
-        height = 400 - margin.top - margin.bottom;
+        height = 450 - margin.top - margin.bottom;
 
 // append the svg object to the body of the page
 const svg = d3.select("#my_dataviz")
@@ -15,12 +15,11 @@ const svg = d3.select("#my_dataviz")
 d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.csv").then( function(data) {
 
     // Parse the date and convert other necessary fields
-    var parseDate = d3.timeParse("%Y,%b,%d");
+    const parseYear = d3.timeParse("%Y");
+    const parseDate = d3.timeParse("%m/%d");
     data.forEach(function (d) {
         d.date = parseDate(d.date);
-        d.year = +d.year;
-        d.month = +d.month;
-        d.day = +d.day;
+        d.year = parseYear(d.year);
     });
 
     // Add X axis
@@ -34,9 +33,9 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.cs
     // Add Y axis
     const y = d3.scaleTime()
     .domain(d3.extent(data, function (d) {return d.date;}))
-    .range([ height, 0]);
+    .range([ 0, height]);
     svg.append("g")
-    .call(d3.axisLeft(y).tickFormat(d3.timeFormat("%b,%d")));
+    .call(d3.axisLeft(y).tickFormat(d3.timeFormat("%m/%d")));
 
     // Add dots
     svg.append('g')
@@ -45,10 +44,18 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.cs
     .join("circle")
         .attr("cx", function (d) { return x(d.year); } )
         .attr("cy", function (d) { return y(d.date); } )
-        .attr("r", 1.5)
-        .style("fill", "#ff375d")
+        .attr("r", 2)
+        .style("fill", "#fed2da")
 
     // similar to above for svg.append line but don't need to call data(data)
+    svg.append("line")
+    .style("stroke", "#ff375d")
+    .style("stroke-width", 3)
+    .attr("x1", 0)
+    .attr("y1", (d3.timeFormat("04/04")))
+    .attr("x2", width0)
+    .attr("y2", (d3.timeFormat("04/04")));
+
     // above and below color, like .style("fill") but with a function instead of a value (if?)
     
 
