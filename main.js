@@ -1,5 +1,5 @@
 // set the dimensions and margins of the graph
-const margin = {top: 10, right: 30, bottom: 30, left: 30},
+const margin = {top: 10, right: 50, bottom: 50, left: 60},
         width = 600 - margin.left - margin.right,
         height = 450 - margin.top - margin.bottom;
 
@@ -35,7 +35,25 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.cs
     .domain(d3.extent(data, function (d) {return d.date;}))
     .range([ 0, height]);
     svg.append("g")
-    .call(d3.axisLeft(y).tickFormat(d3.timeFormat("%m/%d")));
+    .call(d3.axisLeft(y).tickFormat(d3.timeFormat("%b %d")));
+
+    // adding an x-axis label    
+    svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width - 240)
+    .attr("y", height + 40)
+    .text("year");
+
+    // adding a y-axis label
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("y", - 60)
+    .attr("x", - 145)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .text("date of peak bloom");
 
     // Add dots
     svg.append('g')
@@ -44,17 +62,19 @@ d3.csv("https://raw.githubusercontent.com/deidre79/cherry-blossom/main/sakura.cs
     .join("circle")
         .attr("cx", function (d) { return x(d.year); } )
         .attr("cy", function (d) { return y(d.date); } )
-        .attr("r", 2)
+        .attr("r", 2.5)
         .style("fill", "#fed2da")
 
-    // similar to above for svg.append line but don't need to call data(data)
+     // Add horizontal line
+    const horizontalLineY = y(parseDate("04/04")); // Y position of the horizontal line
     svg.append("line")
-    .style("stroke", "#ff375d")
-    .style("stroke-width", 3)
-    .attr("x1", 0)
-    .attr("y1", (d3.timeFormat("04/04")))
-    .attr("x2", width0)
-    .attr("y2", (d3.timeFormat("04/04")));
+        .style("stroke", "#ff4f71")
+        .style("stroke-width", 2)
+        .style("stroke-dasharray", "6.5,3") // Set the line to be dashed, value represents a pattern of 6.5 units of stroke followed by 3 units of space
+        .attr("x1", 0)
+        .attr("y1", horizontalLineY)
+        .attr("x2", width)
+        .attr("y2", horizontalLineY);
 
     // above and below color, like .style("fill") but with a function instead of a value (if?)
     
